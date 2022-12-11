@@ -29,7 +29,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+
   pattern_formatter: ^2.0.0
+
 
   intl: ^0.17.0
   flutter:

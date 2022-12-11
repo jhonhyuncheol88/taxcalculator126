@@ -6,8 +6,6 @@ import 'package:pattern_formatter/pattern_formatter.dart';
 
 
 
-
-
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -34,36 +32,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   bool click = false; //계산 버튼 애니메이션 변수
 
-
+  var comma = NumberFormat('###,### 원'); //콤마 찍는 변수
 
   //final comma = NumberFormat("###,###,###,### 원"); //콤마 관련 변수 선언
 
-  TextEditingController t1 =TextEditingController();
-
-  TextEditingController t2 =TextEditingController();
-  TextEditingController t3 =TextEditingController();
-
+  var t1 = TextEditingController();
+  var t2 = TextEditingController();
+  var t3 = TextEditingController();
 
 
 
 
-  num income = 0;
-  num  taxincome = 0;
-  num spending_Food = 0;
-  num spending_Product = 0;
-  num taxspending = 0;
-  num creditcard_help = 0;
-  num spending_Food_help = 0;
-  num estimate_tax = 0;
-  num data=0;
+  double taxincome = 0;
+  double taxspending = 0;
+  double creditcard_help = 0;
+  double spending_Food_help = 0;
+  double estimate_tax = 0;
 
 
   @override
   void initState() {
-    t1 =TextEditingController();
+
+     t1 = TextEditingController();
      t2 =TextEditingController();
      t3 =TextEditingController();
     super.initState();
@@ -76,34 +68,34 @@ class _HomePageState extends State<HomePage> {
     t3.dispose();
   }
 
+//1.콤마를 추가하면서 문자가 된 숫자 값을 replaceAll을 이용해 콤마를 제거해준다.
+  //2. 콤마를 제거한 숫자 값을 double.parse로 변환해준다.
+  //3. double로 된 숫자 값을 해당 변수에 넣어주고 계산식을 적용한다.
+  void convertStringtoDouble() {
+    var t1text =t1.text;
+    var t1convert= t1text.replaceAll(",", "");
+    var income=double.parse(t1convert);
 
-  void converstringtodouble () {
-    income = double.parse(t1.text);
-    spending_Food =double.parse(t2.text) ;
-    spending_Product = double.parse(t3.text) ;
+    var t2text =t2.text;
+    var t2convert = t2text.replaceAll(",","");
+    var spending_Food =double.parse(t2convert);
+
+    var t3text = t3.text;
+    var t3convert = t3text.replaceAll(",", "");
+    var spending_Product =double.parse(t3convert);
+
+
+        taxincome = income * 1/10;
+        spending_Food_help = spending_Food * 9/109;
+        taxspending = spending_Product *1/10;
+        creditcard_help = spending_Product *13/1000;
+        estimate_tax = (income *1/10) -(spending_Product*1/10) -(spending_Product*13/1000) -(spending_Food*75/1000);
+
   }
 
 
-  void taxmake() {
 
 
-
-    taxincome = income * 1 / 10;
-    taxspending = spending_Product * 1 / 10;
-  }
-
-  void taxcalcualtor() {
-
-
-
-
-    creditcard_help = income * 13 / 1000;
-    spending_Food_help = spending_Food * 9 / 109;
-    estimate_tax = (income * 1 / 10) -
-        (spending_Product * 1 / 10) -
-        creditcard_help -
-        spending_Food_help;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +151,10 @@ class _HomePageState extends State<HomePage> {
               keyboardType: TextInputType.number,
               textAlign: TextAlign.end,
               inputFormatters: [ThousandsFormatter()],
+
+
+
+
             ),
 
             TextField(
@@ -166,25 +162,25 @@ class _HomePageState extends State<HomePage> {
               keyboardType: TextInputType.number,
               textAlign: TextAlign.end,
               inputFormatters: [ThousandsFormatter()],
+
             ),
             TextField(
               controller: t3,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.end,
               inputFormatters: [ThousandsFormatter()],
-            ),
+              ),
             SizedBox(
               height: 20,
             ),
             GestureDetector(
               onTap: () {
                 setState(() {
-                  converstringtodouble();
-
                   click = !click;
-                  //taxmake();
-                  //taxcalcualtor();
 
+                   convertStringtoDouble();
+
+                  //taxcalcualtor();
                 });
               },
               child: AnimatedContainer(
@@ -220,7 +216,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 20,
             ),
-            Text('${data}'),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -250,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: 50,
                 ),
-                Text('${t1.value.text} '),  //taxincome
+                Text(comma.format(taxincome)), //taxincome
               ],
             ),
             SizedBox(
@@ -285,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: 50,
                 ),
-                Text('${taxspending}'),
+                Text(comma.format(taxspending)),
               ],
             ),
             SizedBox(
@@ -320,7 +316,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: 50,
                 ),
-                Text('${creditcard_help}'),
+                Text(comma.format(creditcard_help)),
                 //신용카드 공제 매출의 1.3%
               ],
             ),
@@ -356,7 +352,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: 50,
                 ),
-                Text('${spending_Food_help}'),
+                Text(comma.format(spending_Food_help)),
                 //의제매입공제 식자재 매출의 2억미만 8.26% , 2억 초과 7.24%
               ],
             ),
@@ -392,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   width: 50,
                 ),
-                Text('${estimate_tax}'),
+                Text(comma.format(estimate_tax)),
               ],
             ),
 
@@ -406,4 +402,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-//
