@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
 
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+//화면 비율을 조해주는 패키지
 
 void main() => runApp(const MyApp());
 
@@ -12,8 +14,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    //ScreenUtilINit 최상위 위젯을 감싸준다.
     return ScreenUtilInit(
-      designSize: Size(360, 690),
+      designSize: Size(390,690),
       minTextAdapt: true,
       splitScreenMode: true,
 
@@ -39,6 +43,48 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+
+
+
+
+
+
+ //알럿창
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+
+
+        return AlertDialog(
+
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16)
+          ),
+
+          content:
+
+
+
+          SingleChildScrollView(child: Container(
+            width: ScreenUtil().setWidth(150),
+            height: ScreenUtil().setHeight(450),
+
+            child : Image.asset('assets/image/information.png',fit: BoxFit.fill,) ),),
+          actions: <Widget>[
+
+          ],
+        );
+      },
+    );
+  }
+
+
+
+
 // 뉴모피즘 변수 값
   final off1 = -2.0;
   final off2 = 2.0;
@@ -115,6 +161,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: GestureDetector(
@@ -126,85 +173,187 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text(
-                    '23년 일반사업자 음식점 부가세 계산기',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  Padding(padding: EdgeInsets.all(10)),
+                  Container(width: ScreenUtil().setWidth(200),
+                    height: ScreenUtil().setHeight(50),
+
+                    child: Image.asset('assets/image/name.png',fit: BoxFit.fill,),
+
                   ),
+
+
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(off2, off2),
-                          color: Colors.black38,
-                          blurRadius: blurR,
-                          spreadRadius: spredR,
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(25),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(off2, off2),
+                              color: Colors.black38,
+                              blurRadius: blurR,
+                              spreadRadius: spredR,
+                            ),
+                            BoxShadow(
+                              offset: Offset(off1, off1),
+                              color: Colors.white70,
+                              blurRadius: blurR,
+                              spreadRadius: spredR,
+
+                            )
+                          ],
                         ),
-                        BoxShadow(
-                          offset: Offset(off1, off1),
-                          color: Colors.white70,
-                          blurRadius: blurR,
-                          spreadRadius: spredR,
-                        )
-                      ],
-                    ),
-                    width: ScreenUtil().setWidth(360),
-                    height: ScreenUtil().setHeight(120),
-                    child: Text(
-                      ' ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    maxLength: 11,
-                    controller: t1,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.end,
-                    inputFormatters: [ThousandsFormatter()],
-                    decoration: InputDecoration(
-                      counterText: "",
-                      hintText: ' 매 출 : 신용카드, 배달어플, 현금영수증',
-                    ),
+                        width: ScreenUtil().setWidth(300),
+                        height: ScreenUtil().setHeight(100),
+                        child:
+                        Text(
+                          '세무사님 공간 \n문의 DM',textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(20),color: Colors.red,),
+                        ),
+                      ),
+
+                    ],
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  TextField(
-                    maxLength: 11,
-                    controller: t2,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.end,
-                    inputFormatters: [ThousandsFormatter()],
-                    decoration: InputDecoration(
-                        counterText: "", hintText: '지출 1 :  농축산물,   식자재,   면세물품'),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+
+
+                      Container(
+                        child :
+                        Column(
+                          children: [
+                            SizedBox(height: ScreenUtil().setHeight(7),),
+                            Text('매출',style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),),
+                            SizedBox(height :ScreenUtil().setHeight(5),),
+                            Text('카드,배달,현금영수증',style: TextStyle(fontSize: ScreenUtil().setSp(9),),),
+                          ],
+                        ),
+
+
+                        width: ScreenUtil().setWidth(140),
+                        height: ScreenUtil().setHeight(50),
+
+
+                      ),
+                      Container(
+                        width: ScreenUtil().setWidth(170),
+                        child: TextField(
+                          maxLength: 11,
+                          controller: t1,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.end,
+                          inputFormatters: [ThousandsFormatter()],
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),
+                          decoration: InputDecoration(suffixIcon: IconButton(
+                            onPressed: t1.clear,
+
+                              icon:Icon(
+                            Icons.clear, size: ScreenUtil().setSp(15),)),
+                            counterText: "",
+                            hintText: '사장님'
+
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: ScreenUtil().setHeight(4),
                   ),
-                  TextField(
-                    maxLength: 11,
-                    controller: t3,
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.end,
-                    inputFormatters: [ThousandsFormatter()],
-                    decoration: InputDecoration(
-                        counterText: "", hintText: '지출 2 : 공산품, 배달대행, 광고비,월세'),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        child :
+                        Column(
+                          children: [
+                            SizedBox(height :ScreenUtil().setHeight(7),),
+                            Text('지출1',style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),),
+                            SizedBox(height: 5),
+                            Text('농축산물,식자재,면세물품',style: TextStyle(fontSize: ScreenUtil().setSp(9),),),
+                          ],
+                        ),
+                        width: ScreenUtil().setWidth(140),
+                        height: ScreenUtil().setHeight(50),
+
+
+                      ),
+                      Container(
+                        width: ScreenUtil().setWidth(170),
+
+                        child: TextField(
+                          maxLength: 11,
+                          controller: t2,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.end,
+                          inputFormatters: [ThousandsFormatter()],
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),
+                          decoration: InputDecoration(suffixIcon: IconButton(
+                            onPressed: t2.clear,
+                          icon: Icon(Icons.clear,size: ScreenUtil().setSp(15),) ),
+                              counterText: "",
+                            hintText: '오늘도'
+                        ),
+                      ),
+                      )],
                   ),
                   SizedBox(
-                    height: 20,
+                    height: ScreenUtil().setHeight(10),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(child:
+                        Column(
+                          children: [
+                            SizedBox(height :ScreenUtil().setHeight(5),),
+                            Text('지출2',style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),),
+
+                            Text('공산품, 배달대행,광고비,월세',style: TextStyle(fontSize: ScreenUtil().setSp(9),),),
+                          ],
+                        ),
+                        width: ScreenUtil().setWidth(140),
+                        height: ScreenUtil().setHeight(50),
+
+
+                      ),
+
+                      Container
+                        (
+                        width: ScreenUtil().setWidth(170),
+                        child: TextField(
+                          maxLength: 11,
+                          controller: t3,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.end,
+                          inputFormatters: [ThousandsFormatter()],
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),
+                          decoration: InputDecoration(suffixIcon: IconButton(
+                            onPressed: t3.clear,
+
+                          icon :Icon(Icons.clear,size: ScreenUtil().setSp(15),)),
+                              counterText: "",
+                          hintText: '화이팅'),
+
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(20),
                   ),
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        click = !click;
-                        convertStringtoDouble();
+                        click = !click; //버튼 클릭
+                        convertStringtoDouble();//계산식
+                          _showDialog(); //알럿창 띄우는
 
                         FocusScope.of(context).unfocus(); //키보드 내리는 함수
                       });
@@ -239,239 +388,206 @@ class _HomePageState extends State<HomePage> {
                                   ])),
                   ),
                   SizedBox(
-                    height: 60,
+                    height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: ScreenUtil().setHeight(20),
-                        width: ScreenUtil().setWidth(120),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(off2, off2),
-                                  color: Colors.black38,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR),
-                              BoxShadow(
-                                  offset: Offset(off1, off1),
-                                  color: Colors.white70,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR)
-                            ]),
-                        child: Text(
-                          '매출 과세표준',
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)),
-                          textAlign: TextAlign.center,
+
+                  Container(
+                    width: ScreenUtil().setWidth(330),
+                    height: ScreenUtil().setHeight(200),
+
+
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(off2, off2),
+                          color: Colors.black38,
+                          blurRadius: blurR,
+                          spreadRadius: spredR,
                         ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                          width: ScreenUtil().setWidth(120),
-                          height: ScreenUtil().setHeight(20),
-                          child: Text(
-                            comma.format(taxincome),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
-                                color: Colors.black54),
-                            textAlign: TextAlign.end,
-                          )), //taxincome
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: ScreenUtil().setHeight(20),
-                        width: ScreenUtil().setWidth(120),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(off2, off2),
-                                  color: Colors.black38,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR),
-                              BoxShadow(
-                                  offset: Offset(off1, off1),
-                                  color: Colors.white70,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR)
-                            ]),
-                        child: Text(
-                          '지출 과세표준',
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                          width: ScreenUtil().setWidth(120),
-                          height: ScreenUtil().setHeight(20),
-                          child: Text(
-                            comma.format(taxspending),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
-                                color: Colors.black54),
-                            textAlign: TextAlign.end,
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: ScreenUtil().setHeight(20),
-                        width: ScreenUtil().setWidth(120),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(off2, off2),
-                                  color: Colors.black38,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR),
-                              BoxShadow(
-                                  offset: Offset(off1, off1),
-                                  color: Colors.white70,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR)
-                            ]),
-                        child: Text(
-                          '신용카드공제',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                          width: ScreenUtil().setWidth(120),
-                          height: ScreenUtil().setHeight(20),
-                          child: Text(
-                            comma.format(creditcard_help),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
-                                color: Colors.black54),
-                            textAlign: TextAlign.end,
-                          )),
-                      //신용카드 공제 매출의 1.3%
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height:ScreenUtil().setHeight(20),
-                        width: ScreenUtil().setWidth(120),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(off2, off2),
-                                  color: Colors.black38,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR),
-                              BoxShadow(
-                                  offset: Offset(off1, off1),
-                                  color: Colors.white70,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR)
-                            ]),
-                        child: Text(
-                          '의제매입공제',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                          width: ScreenUtil().setWidth(120),
-                          height: ScreenUtil().setHeight(20),
-                          child: Text(
-                            comma.format(spending_Food_help),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
-                                color: Colors.black54),
-                            textAlign: TextAlign.end,
-                          )),
-                      //의제매입공제 식자재 매출의 2억미만 8.26% , 2억 초과 7.24%
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: ScreenUtil().setHeight(20),
-                        width:ScreenUtil().setWidth(120),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(off2, off2),
-                                  color: Colors.black38,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR),
-                              BoxShadow(
-                                  offset: Offset(off1, off1),
-                                  color: Colors.white70,
-                                  blurRadius: blurR,
-                                  spreadRadius: spredR)
-                            ]),
-                        child: Text(
-                          '예상 부가세',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Container(
-                          width: ScreenUtil().setWidth(120),
-                          height: ScreenUtil().setHeight(20),
-                          child: Text(
-                            comma.format(estimate_tax),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
-                              color: Colors.blue,
+                        BoxShadow(
+                          offset: Offset(off1, off1),
+                          color: Colors.white70,
+                          blurRadius: blurR,
+                          spreadRadius: spredR,
+
+                        )
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height :ScreenUtil().setHeight(10),),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: ScreenUtil().setHeight(20),
+                              width: ScreenUtil().setWidth(110),
+
+                              child: Text(
+                                '매출 과세표준',
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            textAlign: TextAlign.end,
-                          )),
-                    ],
-                  ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Container(
+                                width: ScreenUtil().setWidth(120),
+                                height: ScreenUtil().setHeight(20),
+                                child: Text(
+                                  comma.format(taxincome),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.end,
+                                )), //taxincome
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: ScreenUtil().setHeight(20),
+                              width: ScreenUtil().setWidth(110),
+
+                              child: Text(
+                                '지출 과세표준',
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Container(
+                                width: ScreenUtil().setWidth(120),
+                                height: ScreenUtil().setHeight(20),
+                                child: Text(
+                                  comma.format(taxspending),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.end,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: ScreenUtil().setHeight(20),
+                              width: ScreenUtil().setWidth(110),
+
+                              child: Text(
+                                '신용카드공제',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Container(
+                                width: ScreenUtil().setWidth(120),
+                                height: ScreenUtil().setHeight(20),
+                                child: Text(
+                                  comma.format(creditcard_help),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.end,
+                                )),
+                            //신용카드 공제 매출의 1.3%
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height:ScreenUtil().setHeight(20),
+                              width: ScreenUtil().setWidth(110),
+
+                              child: Text(
+                                '의제매입공제',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Container(
+                                width: ScreenUtil().setWidth(120),
+                                height: ScreenUtil().setHeight(20),
+                                child: Text(
+                                  comma.format(spending_Food_help),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.end,
+                                )),
+                            //의제매입공제 식자재 매출의 2억미만 8.26% , 2억 초과 7.24%
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: ScreenUtil().setHeight(20),
+                              width:ScreenUtil().setWidth(110),
+
+                              child: Text(
+                                '예상 부가세',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Container(
+                                width: ScreenUtil().setWidth(120),
+                                height: ScreenUtil().setHeight(20),
+                                child: Text(
+                                  comma.format(estimate_tax),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                    color: Colors.blue,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                )),
+                          ],
+                        ),
+
+
+
+                      ],
+                    ),
+                  )
+
                 ],
               ),
             )),
