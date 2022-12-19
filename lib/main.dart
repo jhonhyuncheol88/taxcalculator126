@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
-
-
+import 'package:url_launcher/url_launcher.dart'; //url 이동
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//화면 비율을 조해주는 패키지
 
-void main() => runApp(const MyApp());
+//화면 비율을 조해주는 패키지
+import 'package:expandable_page_view/expandable_page_view.dart'; //크기조절가능한 pageview
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'; //pageview indicator
+
+
+
+void main() =>
+
+
+  runApp(const MyApp());
+
+
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -17,10 +27,9 @@ class MyApp extends StatelessWidget {
 
     //ScreenUtilINit 최상위 위젯을 감싸준다.
     return ScreenUtilInit(
-      designSize: Size(390,690),
+      designSize: Size(390, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -43,47 +52,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late ScrollController _scrollController;
+  final PageController p1 = PageController(); //pagecontroller
+  final Uri _url = Uri.parse(
+      'https://smartstore.naver.com/zzimkong2016/products/5458959181');
 
+//url이동
 
-
-
-
-
-
-
- //알럿창
-
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-
-
-        return AlertDialog(
-
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16)
-          ),
-
-          content:
-
-
-
-          SingleChildScrollView(child: Container(
-            width: ScreenUtil().setWidth(150),
-            height: ScreenUtil().setHeight(450),
-
-            child : Image.asset('assets/image/information.png',fit: BoxFit.fill,) ),),
-          actions: <Widget>[
-
-          ],
-        );
-      },
-    );
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
   }
 
-
-
+  //알럿창
 
 // 뉴모피즘 변수 값
   final off1 = -2.0;
@@ -107,8 +89,7 @@ class _HomePageState extends State<HomePage> {
   double taxspending = 0; // 지출 과세표준
   double creditcard_help = 0; // 신용카드공제
   double spending_Food_help = 0; //의제 매입 공제
-  double estimate_tax =
-      0; //예상 부가세  = (t1 *1/10) - (t3 *1/10) - (t1 *13/1000) - (t2*9/109)
+  double estimate_tax = 0; //예상 부가세  = (t1 *1/10) - (t3 *1/10) - (t1 *13/1000) - (t2*9/109)
   double overcreditcard_help = 10000000;
 
 //컨트롤러 초기화
@@ -117,6 +98,8 @@ class _HomePageState extends State<HomePage> {
     t1 = TextEditingController();
     t2 = TextEditingController();
     t3 = TextEditingController();
+    _scrollController = ScrollController();
+
     super.initState();
   }
 
@@ -126,6 +109,98 @@ class _HomePageState extends State<HomePage> {
     t1.dispose();
     t2.dispose();
     t3.dispose();
+    _scrollController.dispose();
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          content:
+
+              //Image.asset('assets/image/information.png',)
+
+              Container(
+            width: 300,
+            height: 300,
+            child: ExpandablePageView(controller: p1, children: [
+              Column(
+                children: [
+                  SizedBox(
+                    width: 280,
+                    height: 280,
+                    child: Image.asset(
+                      'assets/image/information1.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  SmoothPageIndicator(
+                    controller: p1,
+                    count: 3,
+                    axisDirection: Axis.horizontal,
+                    effect: SlideEffect(
+                      activeDotColor: Colors.black,
+                      dotHeight: 10,
+                      dotColor: Colors.black26,
+                      dotWidth: 10,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: 280,
+                    height: 280,
+                    child: Image.asset(
+                      'assets/image/information2.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  SmoothPageIndicator(
+                    controller: p1,
+                    count: 3,
+                    axisDirection: Axis.horizontal,
+                    effect: SlideEffect(
+                      activeDotColor: Colors.black,
+                      dotHeight: 10,
+                      dotColor: Colors.black26,
+                      dotWidth: 10,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: 280,
+                    height: 280,
+                    child: Image.asset(
+                      'assets/image/information3.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  SmoothPageIndicator(
+                    controller: p1,
+                    count: 3,
+                    axisDirection: Axis.horizontal,
+                    effect: SlideEffect(
+                      activeDotColor: Colors.black,
+                      dotHeight: 10,
+                      dotColor: Colors.black26,
+                      dotWidth: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
+        );
+      },
+    );
   }
 
 //1.콤마를 추가하면서 문자가 된 숫자 값을 replaceAll을 이용해 콤마를 제거해준다.
@@ -161,7 +236,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: GestureDetector(
@@ -171,176 +245,243 @@ class _HomePageState extends State<HomePage> {
               });
             },
             child: SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 children: [
-                  Padding(padding: EdgeInsets.all(10)),
-                  Container(width: ScreenUtil().setWidth(200),
+                  Padding(padding: EdgeInsets.all(5)),
+                  Container(
+                    width: ScreenUtil().setWidth(200),
                     height: ScreenUtil().setHeight(50),
-
-                    child: Image.asset('assets/image/name.png',fit: BoxFit.fill,),
-
+                    child:
+                         Image.asset('assets/image/name.png'),
                   ),
 
-
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(25),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(off2, off2),
-                              color: Colors.black38,
-                              blurRadius: blurR,
-                              spreadRadius: spredR,
-                            ),
-                            BoxShadow(
-                              offset: Offset(off1, off1),
-                              color: Colors.white70,
-                              blurRadius: blurR,
-                              spreadRadius: spredR,
-
-                            )
-                          ],
-                        ),
-                        width: ScreenUtil().setWidth(300),
-                        height: ScreenUtil().setHeight(100),
-                        child:
-                        Text(
-                          '세무사님 공간 \n문의 DM',textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(20),color: Colors.red,),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _launchUrl();
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(off2, off2),
+                                color: Colors.black38,
+                                blurRadius: blurR,
+                                spreadRadius: spredR,
+                              ),
+                              BoxShadow(
+                                offset: Offset(off1, off1),
+                                color: Colors.white70,
+                                blurRadius: blurR,
+                                spreadRadius: spredR,
+                              )
+                            ],
+                          ),
+                          width: 270,
+                          height: 120,
+                          child: Image.asset(
+                            'assets/image/zzimkong.png',
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ),
-
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
+                  SizedBox(height: 5,),
+                  Center(
+                    child: Text('1월-6월 : 7월 부가세 || 7월-12월 : 1월 부가세',style: TextStyle(fontSize: ScreenUtil().setSp(10),fontWeight: FontWeight.bold),),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-
-
                       Container(
-                        child :
-                        Column(
+                        child: Column(
                           children: [
-                            SizedBox(height: ScreenUtil().setHeight(7),),
-                            Text('매출',style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),),
-                            SizedBox(height :ScreenUtil().setHeight(5),),
-                            Text('카드,배달,현금영수증',style: TextStyle(fontSize: ScreenUtil().setSp(9),),),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(7),
+                            ),
+                            Text(
+                              '매출',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(15),
+                              ),
+                            ),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(6),
+                            ),
+                            Text(
+                              '카드,배달,현금영수증',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(9),
+                              ),
+                            ),
                           ],
                         ),
-
-
                         width: ScreenUtil().setWidth(140),
                         height: ScreenUtil().setHeight(50),
-
-
                       ),
                       Container(
-                        width: ScreenUtil().setWidth(170),
+
+                        width: ScreenUtil().setWidth(200),
                         child: TextField(
                           maxLength: 11,
                           controller: t1,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.end,
                           inputFormatters: [ThousandsFormatter()],
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),
-                          decoration: InputDecoration(suffixIcon: IconButton(
-                            onPressed: t1.clear,
-
-                              icon:Icon(
-                            Icons.clear, size: ScreenUtil().setSp(15),)),
-                            counterText: "",
-                            hintText: '사장님'
-
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil().setSp(14),
                           ),
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 3, color: Colors.grey)
+                              ),
+                              suffixIcon: IconButton(
+                                  onPressed: t1.clear,
+                                  icon: Icon(
+                                    Icons.clear,
+                                    size: ScreenUtil().setSp(15),
+                                  )),
+                              counterText: "",
+                              hintText: ''),
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: ScreenUtil().setHeight(4),
+                    height: ScreenUtil().setHeight(6),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        child :
-                        Column(
+                        child: Column(
                           children: [
-                            SizedBox(height :ScreenUtil().setHeight(7),),
-                            Text('지출1',style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),),
-                            SizedBox(height: 5),
-                            Text('농축산물,식자재,면세물품',style: TextStyle(fontSize: ScreenUtil().setSp(9),),),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(7),
+                            ),
+                            Text(
+                              '지출1',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(15),
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              '농축산물,식자재,면세물품',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(9),
+                              ),
+                            ),
                           ],
                         ),
                         width: ScreenUtil().setWidth(140),
                         height: ScreenUtil().setHeight(50),
-
-
                       ),
                       Container(
-                        width: ScreenUtil().setWidth(170),
 
+                        width: ScreenUtil().setWidth(200),
                         child: TextField(
+                          onTap: () {
+                            _scrollController.animateTo(120.0,
+                                //텍스트필드 클릭하면 스크롤을 올려줌 -> 계산기 버튼이 잘 보일 수 있게 하기
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.ease);
+                          },
                           maxLength: 11,
                           controller: t2,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.end,
                           inputFormatters: [ThousandsFormatter()],
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),
-                          decoration: InputDecoration(suffixIcon: IconButton(
-                            onPressed: t2.clear,
-                          icon: Icon(Icons.clear,size: ScreenUtil().setSp(15),) ),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil().setSp(14),
+                          ),
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 3, color: Colors.grey)
+                              ),
+                              suffixIcon: IconButton(
+                                  onPressed: t2.clear,
+                                  icon: Icon(
+                                    Icons.clear,
+                                    size: ScreenUtil().setSp(15),
+                                  )),
                               counterText: "",
-                            hintText: '오늘도'
+                              hintText: ''),
                         ),
-                      ),
-                      )],
+                      )
+                    ],
                   ),
                   SizedBox(
                     height: ScreenUtil().setHeight(10),
                   ),
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(child:
-                        Column(
+                      Container(
+                        child: Column(
                           children: [
-                            SizedBox(height :ScreenUtil().setHeight(5),),
-                            Text('지출2',style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),),
-
-                            Text('공산품, 배달대행,광고비,월세',style: TextStyle(fontSize: ScreenUtil().setSp(9),),),
+                            SizedBox(
+                              height: ScreenUtil().setHeight(5),
+                            ),
+                            Text(
+                              '지출2',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: ScreenUtil().setSp(15),
+                              ),
+                            ),
+                            SizedBox(height:ScreenUtil().setHeight(6) ,),
+                            Text(
+                              '공산품, 배달대행,광고비,월세',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(9),
+                              ),
+                            ),
                           ],
                         ),
                         width: ScreenUtil().setWidth(140),
                         height: ScreenUtil().setHeight(50),
-
-
                       ),
+                      Container(
 
-                      Container
-                        (
-                        width: ScreenUtil().setWidth(170),
+                        width: ScreenUtil().setWidth(200),
                         child: TextField(
+
                           maxLength: 11,
                           controller: t3,
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.end,
                           inputFormatters: [ThousandsFormatter()],
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize:ScreenUtil().setSp(15), ),
-                          decoration: InputDecoration(suffixIcon: IconButton(
-                            onPressed: t3.clear,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil().setSp(14),
 
-                          icon :Icon(Icons.clear,size: ScreenUtil().setSp(15),)),
+                          ),
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(width: 3, color: Colors.grey)
+                            ),
+                              suffixIcon: IconButton(
+                                  onPressed: t3.clear,
+                                  icon: Icon(
+                                    Icons.clear,
+                                    size: ScreenUtil().setSp(15),
+                                  )),
                               counterText: "",
-                          hintText: '화이팅'),
-
+                              hintText: ''),
                         ),
                       ),
                     ],
@@ -352,8 +493,8 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       setState(() {
                         click = !click; //버튼 클릭
-                        convertStringtoDouble();//계산식
-                          _showDialog(); //알럿창 띄우는
+                        convertStringtoDouble(); //계산식
+                        _showDialog(); //알럿창 띄우는
 
                         FocusScope.of(context).unfocus(); //키보드 내리는 함수
                       });
@@ -361,9 +502,10 @@ class _HomePageState extends State<HomePage> {
                     child: AnimatedContainer(
                         child: Icon(
                           Icons.currency_exchange_sharp,
-                          color: Colors.blue,size:ScreenUtil().setSp(30),
+                          color: Colors.blue,
+                          size: ScreenUtil().setSp(30),
                         ),
-                        height: ScreenUtil().setHeight(50),
+                        height: ScreenUtil().setHeight(40),
                         width: ScreenUtil().setWidth(70),
                         duration: Duration(milliseconds: 1),
                         curve: Curves.easeInBack,
@@ -388,14 +530,11 @@ class _HomePageState extends State<HomePage> {
                                   ])),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
-
                   Container(
                     width: ScreenUtil().setWidth(330),
                     height: ScreenUtil().setHeight(200),
-
-
                     padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
@@ -412,24 +551,25 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white70,
                           blurRadius: blurR,
                           spreadRadius: spredR,
-
                         )
                       ],
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height :ScreenUtil().setHeight(10),),
-
+                        SizedBox(
+                          height: ScreenUtil().setHeight(10),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                               height: ScreenUtil().setHeight(20),
                               width: ScreenUtil().setWidth(110),
-
                               child: Text(
                                 '매출 과세표준',
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(12)),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -442,7 +582,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   comma.format(taxincome),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: ScreenUtil().setSp(12),
                                       color: Colors.black54),
                                   textAlign: TextAlign.end,
                                 )), //taxincome
@@ -457,10 +598,11 @@ class _HomePageState extends State<HomePage> {
                             Container(
                               height: ScreenUtil().setHeight(20),
                               width: ScreenUtil().setWidth(110),
-
                               child: Text(
                                 '지출 과세표준',
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(12)),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -473,7 +615,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   comma.format(taxspending),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: ScreenUtil().setSp(12),
                                       color: Colors.black54),
                                   textAlign: TextAlign.end,
                                 )),
@@ -488,12 +631,11 @@ class _HomePageState extends State<HomePage> {
                             Container(
                               height: ScreenUtil().setHeight(20),
                               width: ScreenUtil().setWidth(110),
-
                               child: Text(
                                 '신용카드공제',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(12)),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -506,7 +648,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   comma.format(creditcard_help),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: ScreenUtil().setSp(12),
                                       color: Colors.black54),
                                   textAlign: TextAlign.end,
                                 )),
@@ -520,14 +663,13 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              height:ScreenUtil().setHeight(20),
+                              height: ScreenUtil().setHeight(20),
                               width: ScreenUtil().setWidth(110),
-
                               child: Text(
                                 '의제매입공제',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(12)),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -540,7 +682,8 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   comma.format(spending_Food_help),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: ScreenUtil().setSp(12),
                                       color: Colors.black54),
                                   textAlign: TextAlign.end,
                                 )),
@@ -555,13 +698,12 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Container(
                               height: ScreenUtil().setHeight(20),
-                              width:ScreenUtil().setWidth(110),
-
+                              width: ScreenUtil().setWidth(110),
                               child: Text(
                                 '예상 부가세',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12)
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(12)),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -574,20 +716,17 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   comma.format(estimate_tax),
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,fontSize: ScreenUtil().setSp(12),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: ScreenUtil().setSp(12),
                                     color: Colors.blue,
                                   ),
                                   textAlign: TextAlign.end,
                                 )),
                           ],
                         ),
-
-
-
                       ],
                     ),
                   )
-
                 ],
               ),
             )),
